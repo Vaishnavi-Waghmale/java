@@ -1,0 +1,115 @@
+//clientClass.java
+
+
+
+
+import java.net.MalformedURLException; 
+import java.rmi.Naming;
+import java.rmi.NotBoundException; 
+import java.rmi.Remote;
+import java.rmi.RemoteException;
+public class ClentClass {
+public static void main(String arg[]) throws MalformedURLException, RemoteException, NotBoundException {
+	PalindromeInterface obj;
+
+	obj=(PalindromeInterface) Naming.lookup("rmi:localhost/abc"); 
+	Boolean b=obj.palindrome("level");
+	if(b)
+	{
+		System.out.println("Given string is palindrome");
+
+	}
+	else
+	{	
+ 
+		System.out.println("Given string is not palindrome");
+	}
+
+}
+}
+
+
+
+
+//PalindromeInterface.java
+
+
+import java.rmi.Remote;
+
+import java.rmi.RemoteException;
+
+interface PalindromeInterface extends Remote {
+
+public boolean palindrome( String str)throws RemoteException;
+
+
+}
+
+
+//ServerClass.java
+
+
+
+
+import java.net.MalformedURLException; 
+import java.rmi.*;
+
+public class ServerClass {
+
+
+public static void main(String[] args) { 
+	try {
+		PalindromeInterface obj=(PalindromeInterface) new PalindromeImplementClass(); 
+		Naming.rebind("rmi:localhost/abc",obj); 
+		System.out.print("server is ready");
+	} catch (Exception e) {
+
+// TODO Auto-generated catch block
+
+e.printStackTrace();
+
+}
+}
+
+}
+
+
+//PalindromeImplementClass.java
+
+
+import java.rmi.RemoteException;
+
+import java.rmi.server.UnicastRemoteObject;
+
+public class PalindromeImplementClass extends UnicastRemoteObject implements PalindromeInterface{
+
+protected PalindromeImplementClass() throws RemoteException { 
+	super();
+}
+public boolean palindrome(String str){
+
+String revstr="";
+
+for(int i=str.length()-1; i>=0; i--) { 
+	revstr+=str.charAt(i);
+
+}
+if(str.compareTo(revstr)==0) {
+	return true;
+}
+
+else {
+return false;
+}
+}
+}
+
+
+
+open cmd in bin of server
+run rmic PalindromeImplementClass
+start rmiregistry
+
+copy the stub file to bin of client
+run ServerClass
+run ClientClass
