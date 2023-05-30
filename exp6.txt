@@ -1,0 +1,27 @@
+package inetadd;
+
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+
+
+public class demo {
+public static void main(String[] args) throws UnknownHostException {
+
+
+System.out.println("Details of Machine getLocalHost(): "); InetAddress Address = InetAddress.getLocalHost(); System.out.println(Address);
+
+System.out.println();
+
+
+System.out.println("Details of machine getByName()"); Address = InetAddress.getByName("DESKTOP-GVAA565"); System.out.println(Address);
+
+System.out.println();
+
+
+System.out.println("Details 'www.sinhgad.com' getByName(): "); 
+InetAddress SW[] = InetAddress.getAllByName("www.sinhgad.edu"); 
+for (int i = 0; i < SW.length; i++) {
+System.out.println(SW[i]);
+}
+}
+}
