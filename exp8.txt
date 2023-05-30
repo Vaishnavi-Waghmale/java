@@ -1,0 +1,88 @@
+import java.sql.*;
+import java.io.*;
+public class another {
+	public static void main(String args[]){
+			String url = "jdbc:mysql://localhost:3306/cool";
+			String usr = "root";
+			String pass = "1234";
+			Connection conn = null;
+			Statement stmt = null;
+			try{
+				Class.forName("com.mysql.cj.jdbc.Driver");
+				conn = DriverManager.getConnection(url, usr, pass);
+				stmt= conn.createStatement();
+				
+				int choice = 0;
+				while (true) {
+				System.out.println("\n1. Create\n2. Read\n3. Update\n4. Delete\n5. Exit\n");
+				System.out.print("Enter your choice: "); 
+				try{
+					choice = Integer.parseInt(new BufferedReader(new InputStreamReader(System.in)).readLine());
+				} catch (Exception e) {
+				System.out.println("Invalid input. Please try again."); 
+				continue;
+				}
+				switch(choice){
+				case 1:
+					String insertQuery = "INSERT INTO dataset VALUES (1, 'vaishnavi', 'vaishnavi@gmail.com',20, 60000 )";
+					int rowsInserted = stmt.executeUpdate(insertQuery); 
+					if (rowsInserted > 0) {
+					System.out.println("Record inserted successfully.");
+					}
+					break;
+				case 2:
+					String readQuery = "select * from dataset";
+					ResultSet rs = stmt.executeQuery(readQuery);
+					while(rs.next()){
+						System.out.println("ID: " + rs.getInt("id") + ", Name: " + rs.getString("name") + ", Age: " + rs.getInt("age") + ", Salary: " + rs.getInt("salary"));
+					}
+					break;
+				case 3:
+					String updateQuery = "UPDATE dataset SET salary = 60000 WHERE id = 1";
+					int rowsUpdated = stmt.executeUpdate(updateQuery); 
+					if (rowsUpdated > 0) {
+						System.out.println("Record updated successfully.");
+					}
+					break;
+				case 4:
+					String deleteQuery = "DELETE from dataset where id=1";
+					int rowsDeleted = stmt.executeUpdate(deleteQuery); 
+					if (rowsDeleted > 0) {
+						System.out.println("Record deleted successfully.");
+					}
+					break;
+				case 5:
+					System.out.println("Exiting..");
+					break;
+				default:
+					System.out.println("Choice entered is incorrect please enter the right choice...");
+					break;
+
+
+				}
+				if(choice == 5){
+					break;
+				}
+
+				}
+
+			}catch(SQLException se){
+					se.printStackTrace();
+			}catch(Exception e){
+				e.printStackTrace();
+			}finally{
+				try {
+					if (stmt != null) stmt.close();
+					} 
+				catch (SQLException se2) {
+					se2.printStackTrace();
+				}
+				try {
+					if (conn != null) conn.close();
+				} catch (SQLException se) {
+					 se.printStackTrace();
+				}
+
+			}
+	}
+}
